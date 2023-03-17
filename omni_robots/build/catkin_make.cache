@@ -1,0 +1,2 @@
+communication_nodes
+-DCATKIN_DEVEL_PREFIX=/home/luis/catkin_workspaces/lab_casci/omni_robots/devel -DCMAKE_INSTALL_PREFIX=/home/luis/catkin_workspaces/lab_casci/omni_robots/install -G Unix Makefiles
