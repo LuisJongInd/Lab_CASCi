@@ -1,6 +1,9 @@
 <>
 <h1 align="center">Omnidirectional Robots</h1>
 
+<h3 id="#content">Arduino codes</h3>
+<p>The arduino codes are stored <a href="https://github.com/LuisJongInd/Lab_CASCi/tree/master/omni_robots/src/arduino_codes">here.</a></p>
+
 
 <h3 id="#content">Nodes of this workspace</h3>
 <b>Teleoperation node</b>
