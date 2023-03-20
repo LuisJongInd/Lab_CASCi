@@ -1,8 +1,0 @@
-prefix=/home/luis/catkin_workspaces/lab_casci/omni_robots/install
-
-Name: communication_nodes
-Description: Description of communication_nodes
-Version: 0.0.0
-Cflags: 
-Libs: -L${prefix}/lib 
-Requires: 
