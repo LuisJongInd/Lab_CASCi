@@ -16,7 +16,7 @@
 
 
 <h3 id="#geting-started">Getting started</h3>
-<p>This repository is created with <a href="http://wiki.ros.org/noetic">Ros Noetic </a href="https://ubuntu.com/download"> in <a> Ubunu 20.04.</a> Before using this repository, you must complete its installation.</p>
+<p>This repository is created with <a href="http://wiki.ros.org/noetic">Ros Noetic </a> .Before using this repository, you must complete its installation.</p>
 
 <b id="#requirements">requirements</b>
 ## Requirements
