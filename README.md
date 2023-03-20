@@ -1,4 +1,3 @@
- <>
 <!-- Contenido -->
 <details>
   <summary>Tabla de contenidos</summary>
