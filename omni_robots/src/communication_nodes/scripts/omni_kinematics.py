@@ -5,6 +5,7 @@ from math import cos, sin
 import tf
 from geometry_msgs.msg import Twist, PoseStamped
 import time
+import roslaunch
 
 
 class Omni:
@@ -16,8 +17,9 @@ class Omni:
 		self.y_m=None
 		self.t_m=None
 		self.reached=False	
-		self.name=name	
-		print(f'createrd {self.name}')
+		self.name=name
+		self.cmd_pub=rospy.Publisher(self.name+'_cmdVel', Twist, queue_size=10)
+		print(f'createrd {self.name}!')
 
 	def get_omni_pose(self):
 		omni_pose=rospy.wait_for_message('/vrpn_client_node/'+self.name+'/pose', PoseStamped, rospy.Duration(5.0))
@@ -25,7 +27,7 @@ class Omni:
 		self.y_m=omni_pose.pose.position.y
 		th=tf.transformations.euler_from_quaternion([0, 0, omni_pose.pose.orientation.z, omni_pose.pose.orientation.w])[2]
 		self.t_m=th
-		print(f"Current position x:{round(self.x_m, 2)}, y:{round(self.y_m,2)}, theta:{round(self.t_m,2)}")
+		#print(f"Current position x:{round(self.x_m, 2)}, y:{round(self.y_m,2)}, theta:{round(self.t_m,2)}")
 
 	def publish_cmdvel(self, u1, u2, u3):
 		twist.linear.x=u1
@@ -66,8 +68,8 @@ class Omni_kinematics:
 			remaining_y=abs(omni.yw_d-omni.y_m)
 			if remaining_x < 0.1:
 				if remaining_y < 0.1:
-					print("Reached!")
-					print()
+					#print("Reached!")
+					#print()
 					twist.linear.x=0
 					twist.linear.y=0
 					twist.angular.z=0
@@ -79,39 +81,33 @@ class Omni_kinematics:
 			print()
 
 	
-	def run(self, xw_d, yw_d):
-		print("Executing")
-		#for n in range(self.n_omni):
-		#	name='omni'+str(n+1)
-		#	self.omnis.append(Omni(name, xw_d, yw_d))
-		self.omnis.append(Omni("omni2", xw_d, yw_d))
+	def run(self):
+		print("Executing Omni kinematics")
+		goal_list=[]
+
+		for n in range(self.n_omni):
+			name='omni'+str(n+1)
+			xw_d, yw_d=input(f"Define goal (in meters), separated with coma for omni{i}: ").split(",")
+			self.omnis.append(Omni(name, int(xw_d), int(yw_d)))
+			goal_list.append(goal)
+			######### CREATE PYTHON SUBPROCESS TO LAUNCH NODE WITH UNIQUE TCP AS ARG		
 
 		while self.omnis:
 			self.move_omnis()
 		print("Exiting...")
 
 
-def main(xw_d, yw_d, n_omni):
+def main(n_omni):
 	omni_kin=Omni_kinematics(n_omni)
 	rospy.init_node("omni_kinematics")
 	omni_kin.run(xw_d, yw_d)
 
-
-
 if __name__ == '__main__':
 	print("Initialazing omni_kinematics")
 	print("Remember to rename the rigid bodies as omni(number of omni)")
-	n_omni= int(input("Enter the number of omnidirectional robtos: "))
-	input_=input("Define goal (in meters), separated with coma: ").split(",")
-	#input_=[]
-	#for i in range(int(n_omni)):
-	#	goal= input("Define goal (in meters), separated with coma: ").split(",")
-	#	inpu
-
-	xw_d, yw_d= int(input_[0]), int(input_[1])
-	print(f"Goal defined in ({xw_d},{yw_d})")
+	n_omni= int(input("Enter the number of omnidirectional robots: "))
 
 ####
-	cmd_pub = rospy.Publisher('omni2_cmdVel', Twist, queue_size=10)
+#	cmd_pub = rospy.Publisher('omni2_cmdVel', Twist, queue_size=10)
 	twist=Twist()
-	main(xw_d, yw_d, n_omni)
+	main(n_omni)
