@@ -3,6 +3,7 @@
 import rospy
 from geometry_msgs.msg import Twist
 import sys, termios, select, tty, os
+import subprocess
 
 class Teleop:
     def __init__(self):
@@ -36,6 +37,7 @@ class Teleop:
         pub.publish(twist)
         print(twist)
         if (key == '\x03'):
+            process.kill()
             print("Exiting")
             return False 
         print()
@@ -43,11 +45,15 @@ class Teleop:
 
 
 def main():
-    global pub, settings
+    global pub, settings, process
     settings = termios.tcgetattr(sys.stdin)
     rospy.init_node("omni_teleop")
     omni= input("Choose desired omni to move: ")
     pub = rospy.Publisher('omni'+omni+'_cmdVel', Twist, queue_size=10)
+    process=subprocess.Popen(["rosrun", 
+                "rosserial_python", "serial_node.py", "tcp", f"_/rosserial_embeddedlinux/tcp_port:=1141{omni}"],
+                stdout=subprocess.DEVNULL,
+                stderr=subprocess.STDOUT)
     teleop=Teleop()
     try:
         while teleop.run():

@@ -13,7 +13,7 @@
 const char* ssid     = "dlink";
 const char* password = "";
 IPAddress server(192, 168, 0, 161);
-const uint16_t serverPort = 11412; //Unique for every omnidirectional
+const uint16_t serverPort = 11413; //Unique for every omnidirectional
 
 
 // Declaring physical pins
@@ -211,7 +211,7 @@ std_msgs::String str_msg;
 std_msgs::Float64 float_msg;
 ros::Publisher chatter("chatter", &str_msg);
 ros::Publisher float_publisher("float_publisher", &float_msg);
-ros::Subscriber<geometry_msgs::Twist> cmd_sub("omni2_cmdVel", &cmdCB); // Name of omni robot
+ros::Subscriber<geometry_msgs::Twist> cmd_sub("omni3_cmdVel", &cmdCB); // Name of omni robot
 
 
 // forward [1,0,0] backward [-1, 0, 0], left [0, 1, 0], right [0, -1, 0], turn[0, 0, 1]
@@ -313,6 +313,6 @@ else {
   digitalWrite(LED, LOW);
 }
 nh.spinOnce();
-delay(200);
+delay(15);
 digitalWrite(LED, LOW);
 }
